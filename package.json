@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "bundle:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "build:android": "cd android && ./gradlew assembleRelease",
-    "build:android:debug": "cd android && ./gradlew assembleDebug"
+    "build:android:debug": "cd android && ./gradlew assembleDebug",
+    "postinstall": "node scripts/patch-gesture-handler.js"
   },
   "dependencies": {
     "react": "18.3.1",
