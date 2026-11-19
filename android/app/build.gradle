@@ -1,6 +1,8 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
+project.ext.set("hermesEnabled", true)
+
 react {
     /* JS entry point */
 }
