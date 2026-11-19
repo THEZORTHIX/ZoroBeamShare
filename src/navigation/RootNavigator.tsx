@@ -5,6 +5,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import {BlurView} from '@react-native-community/blur';
+import {useBackgroundTransfer} from '../hooks/useBackgroundTransfer';
 
 import HomeScreen from '../screens/HomeScreen';
 import HistoryScreen from '../screens/HistoryScreen';
@@ -29,6 +30,9 @@ const TAB_ROUTES = [
  */
 export const RootNavigator: React.FC = () => {
   const {colors, isDark} = useTheme();
+
+  // Keeps the foreground service alive and notification updated for all transfers
+  useBackgroundTransfer();
 
   return (
     <NavigationContainer>

@@ -19,6 +19,7 @@ import {Colors, Spacing, Typography, Radius, Shadow} from '../theme';
 import {useApp} from '../store/AppContext';
 import {NearbyDevice, TransferFile} from '../utils/types';
 import {getFileCategory, formatBytes} from '../utils/helpers';
+import {useAppStateBeacon} from '../hooks/useAppStateBeacon';
 
 /**
  * HomeScreen — the main hub.
@@ -35,6 +36,9 @@ const HomeScreen: React.FC = () => {
   const [selectedDevice, setSelectedDevice] = useState<NearbyDevice | null>(null);
   const [pickedFiles, setPickedFiles] = useState<TransferFile[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Resume discovery when app returns from background
+  useAppStateBeacon();
 
   // Radar ring animation
   const radarScale = useRef(new Animated.Value(1)).current;

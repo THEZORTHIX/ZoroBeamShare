@@ -14,6 +14,7 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new DefaultReactNativeHost(this) {
+
         @Override
         public boolean getUseDeveloperSupport() {
             return BuildConfig.DEBUG;
@@ -21,8 +22,10 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
-            // PackageList auto-discovers react-native-udp, react-native-tcp-socket, etc.
+            // Auto-discover all native packages (react-native-udp, tcp-socket, etc.)
             List<ReactPackage> packages = new PackageList(this).getPackages();
+            // Register our custom foreground service bridge
+            packages.add(new TransferServicePackage());
             return packages;
         }
 
