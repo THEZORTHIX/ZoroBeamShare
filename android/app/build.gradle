@@ -3,7 +3,6 @@ apply plugin: "com.facebook.react"
 
 react {
     /* JS entry point */
-    entryFile = file(["node", "-e", "require('react-native/scripts/find-pkg-dir.js')('index.js')"].execute().text.trim())
 }
 
 android {
@@ -35,10 +34,9 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            // TODO: add your release keystore here before publishing
             signingConfig signingConfigs.debug
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
@@ -52,10 +50,5 @@ android {
 dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:hermes-android")
-
-    // Required for react-native-udp multicast support
-    implementation 'androidx.core:core:1.13.0'
+    implementation("androidx.core:core:1.13.0")
 }
-
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
-applyNativeModulesAppBuildGradle(project)
