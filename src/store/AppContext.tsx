@@ -236,18 +236,24 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({children}) =
   }, []);
 
   const acceptTransfer = useCallback((transferId: string) => {
+    // Tell the real network service the user accepted
+    discoveryService.acceptTransfer(transferId);
     dispatch({type: 'SET_PENDING_REQUEST', transfer: null});
     const t = state.pendingRequest;
     if (t) {
-      dispatch({type: 'TRANSFER_STARTED', transfer: {...t, status: 'transferring'}});
+      dispatch({type: 'TRANSFER_STARTED', transfer: {...t, status: 'transferring', startedAt: Date.now()}});
     }
   }, [state.pendingRequest]);
 
-  const rejectTransfer = useCallback((_transferId: string) => {
+  const rejectTransfer = useCallback((transferId: string) => {
+    // Tell the real network service the user rejected
+    discoveryService.rejectTransfer(transferId);
     dispatch({type: 'SET_PENDING_REQUEST', transfer: null});
   }, []);
 
   const cancelTransfer = useCallback((transferId: string) => {
+    // Cancel the in-progress TCP send
+    discoveryService.cancelTransfer(transferId);
     dispatch({type: 'TRANSFER_CANCELLED', transferId});
   }, []);
 
