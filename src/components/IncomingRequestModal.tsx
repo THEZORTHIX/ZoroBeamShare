@@ -6,10 +6,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {GlassCard} from './GlassCard';
 import {BeamButton} from './BeamButton';
-import {useTheme} from '../../theme/ThemeContext';
-import {Colors, Spacing, Typography, Radius} from '../../theme';
-import {Transfer} from '../../utils/types';
-import {formatBytes, getInitials, stringToColor} from '../../utils/helpers';
+import {useTheme} from '../theme/ThemeContext';
+import {Colors, Spacing, Typography, Radius} from '../theme';
+import {Transfer} from '../utils/types';
+import {formatBytes, getInitials, stringToColor} from '../utils/helpers';
 
 interface IncomingRequestModalProps {
   transfer: Transfer | null;

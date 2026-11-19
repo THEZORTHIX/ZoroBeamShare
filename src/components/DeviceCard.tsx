@@ -5,10 +5,10 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {GlassCard} from './GlassCard';
-import {useTheme} from '../../theme/ThemeContext';
-import {Colors, Spacing, Typography, Radius} from '../../theme';
-import {NearbyDevice} from '../../utils/types';
-import {stringToColor, getInitials} from '../../utils/helpers';
+import {useTheme} from '../theme/ThemeContext';
+import {Colors, Spacing, Typography, Radius} from '../theme';
+import {NearbyDevice} from '../utils/types';
+import {stringToColor, getInitials} from '../utils/helpers';
 import HapticFeedback from 'react-native-haptic-feedback';
 
 interface DeviceCardProps {

@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import HapticFeedback from 'react-native-haptic-feedback';
-import {Colors, Radius, Typography, Shadow} from '../../theme';
+import {Colors, Radius, Typography, Shadow} from '../theme';
 
 interface BeamButtonProps {
   label: string;

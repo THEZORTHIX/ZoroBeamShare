@@ -3,13 +3,13 @@ import {View, Text, StyleSheet, Animated, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {GlassCard} from './GlassCard';
-import {useTheme} from '../../theme/ThemeContext';
-import {Colors, Spacing, Typography, Radius} from '../../theme';
-import {Transfer} from '../../utils/types';
+import {useTheme} from '../theme/ThemeContext';
+import {Colors, Spacing, Typography, Radius} from '../theme';
+import {Transfer} from '../utils/types';
 import {
   formatBytes, formatSpeed, formatETA, getProgress,
   getCategoryGradient, getCategoryIcon, getFileCategory,
-} from '../../utils/helpers';
+} from '../utils/helpers';
 
 interface TransferCardProps {
   transfer: Transfer;

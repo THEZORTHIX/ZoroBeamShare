@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {View, StyleSheet, Animated, Easing} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Colors} from '../../theme';
+import {Colors} from '../theme';
 
 interface OrbConfig {
   color: string;
