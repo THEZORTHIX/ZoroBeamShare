@@ -40,6 +40,9 @@ jobs:
           key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: gradle-
 
+      - name: Build Android Bundle
+        run: npm run bundle:android
+
       - name: Build Android Debug APK
         run: |
           cd android
