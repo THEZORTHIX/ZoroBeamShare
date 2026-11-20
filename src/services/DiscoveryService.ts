@@ -87,8 +87,10 @@ class ZBSNetworkService {
     this.running = false;
 
     if (this.beaconTimer) { clearInterval(this.beaconTimer); this.beaconTimer = null; }
-    this.udpSocket?.close(); this.udpSocket = null;
-    this.tcpServer?.destroy(); this.tcpServer = null;
+    try { this.udpSocket?.close(); } catch {}
+    this.udpSocket = null;
+    try { (this.tcpServer as any)?.close?.(); } catch {}
+    this.tcpServer = null;
 
     // Cancel all in-progress sends
     this.activeSends.forEach(s => { s.cancelled = true; s.socket.destroy(); });
@@ -161,7 +163,7 @@ class ZBSNetworkService {
     const buf = Buffer.from(payload, 'utf8');
 
     this.udpSocket.send(buf, 0, buf.length, BEACON_PORT, '255.255.255.255',
-      (err: Error | null) => { if (err) console.warn('[ZBS] Beacon send error:', err); },
+      (err?: Error) => { if (err) console.warn('[ZBS] Beacon send error:', err); },
     );
   }
 
@@ -227,7 +229,7 @@ class ZBSNetworkService {
     let headerBuf   = '';
     let transfer: Transfer | null = null;
     let currentFile: TransferFile | null = null;
-    let fileStream: RNFS.StatefulPromise<void> | null = null;
+    let fileStream: any = null;
     let fileOffset  = 0;
     let totalRcvd   = 0;
     let speedTimer: ReturnType<typeof setInterval> | null = null;
@@ -318,7 +320,7 @@ class ZBSNetworkService {
           }
 
           // Process any leftover bytes that arrived with the header packet
-          if (leftover.length > 0) {
+          if (leftover.length > 0 && currentFile) {
             await this.writeChunk(transfer, currentFile, leftover);
             totalRcvd += leftover.length;
           }
@@ -471,7 +473,7 @@ class ZBSNetworkService {
                     const buf      = Buffer.from(b64Chunk, 'base64');
 
                     await new Promise<void>((res, rej) => {
-                      socket.write(buf, (err?: Error | null) => {
+                      (socket as any).write(buf, (err?: Error | null) => {
                         if (err) rej(err); else res();
                       });
                     });
@@ -543,7 +545,7 @@ class ZBSNetworkService {
         const b64Chunk  = await RNFS.read(child.path, length, offset, 'base64');
         const buf       = Buffer.from(b64Chunk, 'base64');
         await new Promise<void>((res, rej) => {
-          socket.write(buf, (err?: Error | null) => { if (err) rej(err); else res(); });
+          (socket as any).write(buf, (err?: Error | null) => { if (err) rej(err); else res(); });
         });
         offset  += length;
         onBytes(length);
@@ -564,7 +566,7 @@ class ZBSNetworkService {
             senderName: this.localName,
             ts:         Date.now(),
           }) + '\n';
-          socket.write(payload, () => { socket.destroy(); resolve(); });
+          (socket as any).write(payload, () => { socket.destroy(); resolve(); });
         },
       );
       socket.on('error', reject);

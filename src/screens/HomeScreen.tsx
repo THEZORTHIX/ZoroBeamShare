@@ -55,8 +55,10 @@ const HomeScreen: React.FC = () => {
 
     // Start discovery on mount
     startDiscovery();
-    return () => stopDiscovery();
-  }, []);
+    return () => {
+      stopDiscovery();
+    };
+  }, [startDiscovery, stopDiscovery]);
 
   // Radar pulse when discovering
   useEffect(() => {

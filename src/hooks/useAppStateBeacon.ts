@@ -19,8 +19,12 @@ import {discoveryService} from '../services/DiscoveryService';
 import {useApp} from '../store/AppContext';
 
 export const useAppStateBeacon = (): void => {
-  const {state, startDiscovery, stopDiscovery} = useApp();
+  const {state, startDiscovery} = useApp();
   const appState = useRef<AppStateStatus>(AppState.currentState);
+  const stateRef = useRef(state);
+  stateRef.current = state;
+  const startDiscoveryRef = useRef(startDiscovery);
+  startDiscoveryRef.current = startDiscovery;
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextState: AppStateStatus) => {
@@ -29,9 +33,9 @@ export const useAppStateBeacon = (): void => {
 
       if (prev.match(/inactive|background/) && nextState === 'active') {
         // App came to foreground — resume discovery if it was running
-        if (state.isDiscovering) {
+        if (stateRef.current.isDiscovering) {
           console.log('[ZBS] App foregrounded — resuming discovery');
-          startDiscovery();
+          startDiscoveryRef.current();
         }
       }
 
@@ -41,14 +45,16 @@ export const useAppStateBeacon = (): void => {
         console.log('[ZBS] App backgrounded — foreground service keeping transfers alive');
 
         // On iOS, we have to stop discovery to avoid OS termination
-        if (Platform.OS === 'ios' && !hasActiveTransfer(state)) {
+        if (Platform.OS === 'ios' && !hasActiveTransfer(stateRef.current)) {
           console.log('[ZBS] iOS: pausing discovery in background');
         }
       }
     });
 
-    return () => subscription.remove();
-  }, [state.isDiscovering, state.activeTransfers]);
+    return () => {
+      subscription?.remove();
+    };
+  }, []);
 };
 
 function hasActiveTransfer(state: ReturnType<typeof useApp>['state']): boolean {

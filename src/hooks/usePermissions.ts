@@ -66,8 +66,8 @@ export const usePermissions = () => {
     perms.push(PERMISSIONS.ANDROID.CAMERA);
 
     // ── Notifications (Android 13+) ───────────────────────────────────────────
-    if (apiLevel >= 33) {
-      perms.push(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+    if (apiLevel >= 33 && (PERMISSIONS.ANDROID as any).POST_NOTIFICATIONS) {
+      perms.push((PERMISSIONS.ANDROID as any).POST_NOTIFICATIONS);
     }
 
     return perms;
@@ -110,7 +110,7 @@ export const usePermissions = () => {
 
       // Check if any critical (non-notification) permission is denied
       const critical = required.filter(
-        p => p !== PERMISSIONS.ANDROID.POST_NOTIFICATIONS &&
+        p => p !== (PERMISSIONS.ANDROID as any).POST_NOTIFICATIONS &&
              p !== PERMISSIONS.ANDROID.CAMERA,
       );
       const denied = critical.some(p => results[p] === RESULTS.DENIED);

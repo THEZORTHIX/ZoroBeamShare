@@ -4,6 +4,7 @@ import {
   Switch, TouchableOpacity, Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {AmbientBackground} from '../components/AmbientBackground';
 import {GlassCard} from '../components/GlassCard';
@@ -170,9 +171,6 @@ const SettingsScreen: React.FC = () => {
     </View>
   );
 };
-
-// Needed for LinearGradient in component
-import LinearGradient from 'react-native-linear-gradient';
 
 const styles = StyleSheet.create({
   container: {flex: 1},

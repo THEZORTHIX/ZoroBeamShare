@@ -190,18 +190,18 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({children}) =
     }
   }, [state.activeTransfers]);
 
+  const unsubDiscoveryRef = useRef<(() => void) | null>(null);
+
   const startDiscovery = useCallback(async () => {
     dispatch({type: 'SET_DISCOVERING', value: true});
-    const unsub = discoveryService.subscribe(handleEvent);
+    unsubDiscoveryRef.current?.();
+    unsubDiscoveryRef.current = discoveryService.subscribe(handleEvent);
     await discoveryService.start(state.deviceName, state.savePath);
-    return () => {
-      unsub();
-      discoveryService.stop();
-      dispatch({type: 'SET_DISCOVERING', value: false});
-    };
   }, [state.deviceName, state.savePath, handleEvent]);
 
   const stopDiscovery = useCallback(() => {
+    unsubDiscoveryRef.current?.();
+    unsubDiscoveryRef.current = null;
     discoveryService.stop();
     dispatch({type: 'SET_DISCOVERING', value: false});
   }, []);
